@@ -18,12 +18,9 @@ int position(int n, int x){
             check = i,
             base = 1;
 
-        while (check < n){
+        while (check < n/base){
             if (i == x/base) break;
-            cout <<check <<" ";
-            if (check < x)
-                startCnt += base;
-            else startCnt++;
+            startCnt += base;
             base *= 10;
             check = i * base;
         }
