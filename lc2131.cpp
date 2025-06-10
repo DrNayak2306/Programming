@@ -15,68 +15,35 @@ O(n^2) solution:
 
 using namespace std;
 
-bool isPalindrome(string word){
-    int l = 0, r = word.size()-1;
-    while (l < r){
-        if (word[l] != word[r])
-            return false;
-    }
-    return true;
-}
-
 int main(){
     int n;
-    cin >> n;
-
+    cin >>n;
     vector<string> words(n);
-    for (int i=0; i<n; i++){
-        cin >> words[i];
+    for (int i=0; i<n; i++)
+        cin >>words[i];
+
+    unordered_map<string, int> wordFreq;
+
+    for (string word: words){
+        wordFreq[word]++;
     }
-
-    int res = 0, even = 0;
-    bool odd = false;
-    set<string> seen;
-    
-    // O(n)
-    for (auto i : words){
-
-        // O(log n)
-        if (seen.find(i) != seen.end())
-            continue;
-        int cnt = 0;
-
-        // O(n)
-        for (auto j : words){
-            if (i == j)
-                cnt++;
+    int palindromeLength = 0;
+    bool oddTaken = false;
+    for (string word: words){
+        string rev = {word[1], word[0]};
+        if (word != rev){
+            palindromeLength += min(wordFreq[word], wordFreq[rev])*4;
         }
-        if (isPalindrome(i)){
-            if (cnt % 2 == 1){
-                odd = true;
-                res += (cnt-1)*2;
-            }
-            else
-                res += cnt*2;
-        }
-
-        // O(n)
         else{
-            string k = i;
-            reverse(k.begin(), k.end());
-            int revCnt = 0;
-            for (auto j : words){
-                if (j == k){
-                    revCnt++;
-                }
+            palindromeLength += (wordFreq[word])*2 ;
+            if (wordFreq[word]%2==1){
+                if (!oddTaken) oddTaken = true;
+                else palindromeLength -= 2;
             }
-            res += min(cnt, revCnt)*2;
         }
+        wordFreq[word] = 0;
+        if (wordFreq.find(rev) != wordFreq.end())
+            wordFreq[rev] = 0;
     }
-
-    if (odd)
-        res += 2;
-
-    cout << res << endl;
-    
-    return 0;
+    cout <<palindromeLength <<endl;
 }

@@ -1,41 +1,30 @@
-/*
-
-*/
-
 #include <bits/stdc++.h>
 
 using namespace std;
-
-
-template <class returnType>
-pair<returnType, double> secondary(){
-    time_t start_time = clock();
-    returnType mainRet;
-    time_t end_time = clock();
-    return pair<mainRet, (double)(end_time-start_time)/CLOCKS_PER_SEC>;
-}
 
 int main(){
     string s;
     cin >>s;
     
-    // brute-force solution
-    // TLE for testcase in lc2434TLE.txt
-    string c;
+    string c, t;
+    
+    int i = 0;
     int start = 0;
-    time_t start_time = clock();
-    while (!s.empty()){
-        int j = start;
-        for (int i = 0; i < s.size(); i++){
-            if (s[i] < s[j]){
-                j = i;
-            }
+    while (start < s.size()){
+        // brute-force min extraction
+        i = min_element(s.begin()+start, s.end())-s.begin(); 
+        while (!t.empty() && s[i] >= t.back()){
+            c += t.back();
+            t.pop_back();
         }
-        start = (j == 0) ? 0 : j-1;
-        c += s[j];
-        s.erase(s.begin()+j);
+        t.append(s.begin()+start, s.begin()+i);
+        c += s[i];
+        start = i + 1;
     }
-    time_t end_time = clock();
-    cout <<"Time taken: " <<(double)(end_time-start_time)/CLOCKS_PER_SEC <<endl;
+    while (!t.empty()){
+        c += t.back();
+        t.pop_back();
+    }
+    cout <<c <<endl;
     return 0;
 }
