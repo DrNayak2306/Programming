@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run with IO redirection",
+      "type": "shell",
+      "command": "sh",
+      "args": [
+        "-c",
+        "g++ \"${file}\" && ./a.out < \"${fileDirname}\"/input.txt > \"${fileDirname}\"/output.txt"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile and run current C++ file with input/output redirection"
+    }
+  ]
+}
