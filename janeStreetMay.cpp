@@ -7,6 +7,7 @@ private:
     vector<vector<char>> layout;
     vector<vector<int>> grid;
     unordered_map<char, int> segVal;
+    set<pair<int, int>> tiles;
     
 public:
     void setVal(char ch, int val) {
@@ -24,46 +25,111 @@ public:
         long long n = 0;
         long long base = 1;
         for (int col = grid[0].size()-1; col >= 0; col--) {
+            if (tiles.find({row, col}) != tiles.end()) {
+                continue;
+            }
+            if (grid[row][col] < '0' || grid[row][col] > '9') {
+                return -1;
+            }
             n += base * segVal[layout[row][col]];
             base *= 10;
         }
         return n;
     }
-    inline bool row1() {
-        long long n = getRowNum(0);
-        int rt = sqrt(n);
-        return 1LL * rt * rt == n;
-    }
 
-    inline bool row2() {
+    bool isGoalState() {
+        // is a square
+        long long n;
+        if ((n = getRowNum(0)) == -1) return false;
+        int rt = sqrt(n);
+        if (1LL * rt * rt != n) return false;
+        
         // product of digits is 20
-    }
-    inline bool row3() {
+        if ((n = getRowNum(1)) == -1) return false;
+        int prod = 1;
+        while (n && prod < 20) {
+            int d = n % 10;
+            prod *= d;
+            n /= 10;
+        }
+        if (prod != 20) return false;
+
         // multiple of 13
-    }
-    inline bool row4() {
+        if ((n = getRowNum(2)) == -1 || n % 13 != 0) return false;
+
         // multiple of 32
-    }
-    inline bool row5() {
+        if ((n = getRowNum(3)) == -1 || n % 32 != 0) return false;
+
         // divisible by each of its digits
-    }
-    inline bool row6() {
+        if ((n = getRowNum(5)) == -1) return false;
+        for (int x = n; x > 0; x /= 10) {
+            int d = x % 10;
+            if (d == 0 || n % d != 0) {
+                return false;
+            }
+        }
+
         // product of digits is 25
-    }
-    inline bool row7() {
+        if ((n = getRowNum(5)) == -1) return false;
+        int prod = 1;
+        while (n && prod < 25) {
+            int d = n % 10;
+            prod *= d;
+            n /= 10;
+        }
+        if (prod != 25) return false;
+
         // divisible by each of its digits
-    }
-    inline bool row8() {
+        if ((n = getRowNum(6)) == -1) return false;
+        for (int x = n; x > 0; x /= 10) {
+            int d = n % 10;
+            if (d == 0 || n % d != 0) {
+                return false;
+            }
+        }
+
         // odd and a palindrome
-    }
-    inline bool row9() {
-        // fibonacci
-    }
-    inline bool row10() {
+        n = getRowNum(7);
+        if (n % 2 == 0) {
+            return false;
+        }
+
+        long long rev = 0;
+        for (int x = n; x > 0; x /= 10) {
+            rev += x % 10;
+            rev *= 10;
+        }
+        if (rev != n) return false;
+
+        // is fibonacci
+        n = getRowNum(8);
+        long long a = 1, b = 1, c;
+        while ((c = a + b) < n) {
+            a = b;
+            b = c;
+        }
+        if (c != n) return false;
+
         // product of digits is 2025
-    }
-    inline bool row11() {
+        n = getRowNum(9);
+        int prod = 1;
+        
+        while (n && prod < 2025) {
+            int d = n % 10;
+            prod *= d;
+            n /= 10;
+        }
+        if (prod != 2025) return false;
+
         // prime
+        n = getRowNum(10);
+        if (n < 2) return false;
+        for (int i = 2; i <= sqrt(n); i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
     
 public:
@@ -91,13 +157,19 @@ public:
             cout << "\n";
         }
     }
+
+    void solve() {
+
+    }
 };
 
 int main(){
-    Solution obj("input.txt");
+    Solution obj("janeStreetMay.txt");
     obj.displayLayout();
     obj.setVal('a', 0);
-    cout << obj.getRowNum(0) << endl;
-    cout << obj.row1() << endl;
+    obj.setVal('A', 1);
+    obj.setVal('b', 5);
+    cout << obj.getRowNum(1) << endl;
+    cout << (obj.isGoalState()) << endl;
     return 0;
 }

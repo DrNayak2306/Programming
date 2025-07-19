@@ -1,0 +1,18 @@
+BWC 161
+Q4. Number of integers with popcount depth equal to K I
+
+WC 457
+Q3. Minimum Time for K Connected Components
+Q4. Minimum Moves to Reach Target in Grid
+
+WC 458
+Q3. Process string with special operations II
+Q4. Longest Palindromic Path in Graph
+
+BWC 160
+Q3. Minimum Time to Reach Destination in Directed Graph
+Q4. Minimum Stability Factor of Array
+
+WC 456
+Q3. Partition to Minimize XOR
+Q4. Maximize Spanning Tree Stability with Upgrades

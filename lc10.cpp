@@ -13,7 +13,7 @@ private:
             if (si == s.size()) return true;
             return false;
         }
-        
+         
         if (pi+1 < p.size() && p[pi+1] == '*'){
             // try 0 match from s
             if (p[pi] == '.')
